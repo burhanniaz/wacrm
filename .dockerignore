@@ -20,8 +20,10 @@ build/
 .git
 .gitignore
 .github/
+.gitlab-ci.yml
+.travis.yml
 
-# IDE
+# IDE and OS files
 .vscode/
 .idea/
 *.swp
@@ -34,25 +36,11 @@ README.md
 CHANGELOG.md
 CONTRIBUTING.md
 docs/
+AGENTS.md
+CLAUDE.md
+LICENSE
 
 # Testing
 .test.ts
 .spec.ts
-vitest.config.ts
 coverage/
-
-# Development only
-eslint.config.mjs
-postcss.config.mjs
-tsconfig.json
-
-# CI/CD
-.github/
-.gitlab-ci.yml
-.travis.yml
-
-# Root level configs not needed in image
-AGENTS.md
-CLAUDE.md
-LICENSE
-components.json
