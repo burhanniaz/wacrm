@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install ALL dependencies (Next.js requires devDependencies like Tailwind & TypeScript to build)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -23,10 +23,8 @@ WORKDIR /app
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
 
-# Copy node_modules from builder
+# Copy node_modules and build files from builder
 COPY --from=builder /app/node_modules ./node_modules
-
-# Copy built application from builder
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
