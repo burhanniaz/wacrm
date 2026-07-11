@@ -6,11 +6,30 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
 
-# Install ALL dependencies (Next.js requires devDependencies like Tailwind & TypeScript to build)
+# Install ALL dependencies
 RUN npm ci
 
 # Copy source code
 COPY . .
+
+# --- NEW: Open the doors for Easypanel's build variables ---
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_APP_LOCALE
+
+# Make them available to Next.js during the build process
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_APP_LOCALE=$NEXT_PUBLIC_APP_LOCALE
+# -----------------------------------------------------------
+
+# Build the Next.js application
+RUN npm run build
+
+# Runtime stage
+# ... (Keep your existing runtime stage code exactly as it is down here) ...g
 
 # Build the Next.js application
 RUN npm run build
